@@ -16,11 +16,17 @@ const handlers: {[key: string]: () => void} = {
     const cocktail = getCocktail()
 
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', `今日のオススメは「${cocktail.name}」です。${cocktail.description}`)
+    this.emit(':tell', `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`)
+  },
+  'Cocktail'(): void {
+    const cocktail = getCocktail()
+
+    // tslint:disable-next-line:no-invalid-this
+    this.emit(':tell', `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`)
   },
   'AMAZON.HelpIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':ask', 'ヘルプのメッセージが入るよ', 'どうしますか？')
+    this.emit(':ask', 'おすすめのカクテルをお伝えします。', 'どうしますか？')
   },
   'AMAZON.CancelIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
