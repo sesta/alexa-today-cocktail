@@ -14,10 +14,9 @@ export const handle = (event: RequestBody<Request>, context: Context): void => {
 const handlers: {[key: string]: () => void} = {
   'LaunchRequest'(): void {
     const cocktail = getCocktail()
-    const message = `今日のオススメは${cocktail}です`
 
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':tellWithCard', message)
+    this.emit(':tell', `今日のオススメは「${cocktail.name}」です。${cocktail.description}`)
   },
   'AMAZON.HelpIntent'(): void {
     // tslint:disable-next-line:no-invalid-this
