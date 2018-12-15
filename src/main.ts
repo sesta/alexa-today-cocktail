@@ -14,9 +14,10 @@ export const handle = (event: RequestBody<Request>, context: Context): void => {
 const handlers: {[key: string]: () => void} = {
   'LaunchRequest'(): void {
     const cocktail = getCocktail()
+    const message = `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`
 
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`)
+    this.emit(':tellWithCard', message, '今日のカクテル', message)
   },
   'Cocktail'(): void {
     const cocktail = getCocktail()
