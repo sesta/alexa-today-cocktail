@@ -17,7 +17,7 @@ const handlers: {[key: string]: () => void} = {
     const message = `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`
 
     // tslint:disable-next-line:no-invalid-this
-    this.emit(':tellWithCard', message, '今日のカクテル', message)
+    this.emit(':tellWithCard', message, cocktail.name, cocktail.description)
   },
   'Cocktail'(): void {
     const cocktail = getCocktail()
