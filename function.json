@@ -1,5 +1,5 @@
 {
   "description": "Today Cocktail skil",
-  "handler": "index.handle",
+  "handler": "index.handler",
   "runtime": "nodejs8.10"
 }
