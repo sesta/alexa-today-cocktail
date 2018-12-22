@@ -1,5 +1,5 @@
 import { HandlerInput, Skill, SkillBuilders } from 'ask-sdk'
-import { Context, RequestEnvelope, Response, ResponseEnvelope, services } from 'ask-sdk-model'
+import { Context, RequestEnvelope, Response, ResponseEnvelope } from 'ask-sdk-model'
 
 import { getCocktail } from './cocktail'
 
