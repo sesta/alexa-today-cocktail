@@ -1,43 +1,43 @@
-import { Context, handler, Request, RequestBody } from 'alexa-sdk'
+import { HandlerInput, Skill, SkillBuilders } from 'ask-sdk'
+import { Context, RequestEnvelope, Response, ResponseEnvelope, services } from 'ask-sdk-model'
 
 import { getCocktail } from './cocktail'
 
-const APP_ID: string = undefined
+let skill: Skill
 
-export const handle = (event: RequestBody<Request>, context: Context): void => {
-  const alexa = handler(event, context)
-  alexa.appId = APP_ID
-  alexa.registerHandlers(handlers)
-  alexa.execute()
+export const handler = async(event: RequestEnvelope, context: Context): Promise<ResponseEnvelope> => {
+  if (!skill) {
+    skill = SkillBuilders.custom()
+      .addRequestHandlers(launchRequestHandler)
+      .addErrorHandlers(errorHandler)
+      .create()
+  }
+
+  return skill.invoke(event, context)
 }
 
-const handlers: {[key: string]: () => void} = {
-  'LaunchRequest'(): void {
+const launchRequestHandler = {
+  canHandle(handlerInput: HandlerInput): boolean {
+    return handlerInput.requestEnvelope.request.type === 'LaunchRequest'
+  },
+  handle(handlerInput: HandlerInput): Response {
     const cocktail = getCocktail()
     const message = `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`
 
-    // tslint:disable-next-line:no-invalid-this
-    this.emit(':tellWithCard', message, cocktail.name, cocktail.description)
-  },
-  'Cocktail'(): void {
-    const cocktail = getCocktail()
+    return handlerInput.responseBuilder
+      .speak(message)
+      .withSimpleCard(cocktail.name, cocktail.description)
+      .getResponse()
+  }
+}
 
-    // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', `今日のおすすめは「${cocktail.name}」です。${cocktail.description}`)
+const errorHandler = {
+  canHandle(): boolean {
+    return true
   },
-  'AMAZON.HelpIntent'(): void {
-    // tslint:disable-next-line:no-invalid-this
-    this.emit(':ask', 'おすすめのカクテルをお伝えします。', 'どうしますか？')
-  },
-  'AMAZON.CancelIntent'(): void {
-    // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', 'さようなら')
-  },
-  'AMAZON.StopIntent'(): void {
-    // tslint:disable-next-line:no-invalid-this
-    this.emit(':tell', 'さようなら')
-  },
-  'SessionEndedRequest'(): void {
-    // Nothing to do
+  handle(handlerInput: HandlerInput, error: Error): Response {
+    return handlerInput.responseBuilder
+      .speak('申し訳ありません、メンテナンス中ですので時間をおいてお試しください')
+      .getResponse()
   }
 }
