@@ -36,6 +36,8 @@ const errorHandler = {
     return true
   },
   handle(handlerInput: HandlerInput, error: Error): Response {
+    console.log(error)
+
     return handlerInput.responseBuilder
       .speak('申し訳ありません、メンテナンス中ですので時間をおいてお試しください')
       .getResponse()
